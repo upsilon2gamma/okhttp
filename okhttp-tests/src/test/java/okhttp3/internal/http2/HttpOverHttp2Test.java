@@ -21,6 +21,7 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,6 +41,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.DoubleInetAddressDns;
+import okhttp3.internal.ConnectionRecorder;
 import okhttp3.internal.RecordingOkAuthenticator;
 import okhttp3.internal.SingleInetAddressDns;
 import okhttp3.internal.Util;
@@ -52,6 +54,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.mockwebserver.SocketPolicy;
 import okio.Buffer;
 import okio.BufferedSink;
+import okio.ByteString;
 import okio.GzipSink;
 import okio.Okio;
 import org.junit.After;
@@ -66,7 +69,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static okhttp3.TestUtil.defaultClient;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /** Test how SPDY interacts with HTTP/2 features. */
@@ -758,6 +763,55 @@ public final class HttpOverHttp2Test {
     RecordedRequest pushedRequest = server.takeRequest();
     assertEquals("HEAD /foo/bar HTTP/1.1", pushedRequest.getRequestLine());
     assertEquals("bar", pushedRequest.getHeader("foo"));
+  }
+
+  @Test public void noDataFramesTransmittedOnNullRequestBody() throws Exception {
+    server.enqueue(new MockResponse()
+        .setBody("ABC"));
+
+    ConnectionRecorder connectionRecorder =
+        new ConnectionRecorder(client, server, sslClient.socketFactory);
+    client = connectionRecorder.newClient();
+
+    Call call = client.newCall(new Request.Builder()
+        .url(server.url("/"))
+        .method("DELETE", null)
+        .build());
+    Response response = call.execute();
+    assertEquals("ABC", response.body().string());
+
+    // Replay the bytes sent from the client to ensure no data frames were sent.
+    ConnectionRecorder.Conversation conversation = connectionRecorder.takeConversation();
+    connectionRecorder.shutdown();
+
+    ByteString bytesFromClient = conversation.bytesFromClient();
+    Buffer buffer = new Buffer();
+    buffer.write(bytesFromClient);
+
+    // We expect 4 frames in the replay (ordering is non-deterministic):
+    // Settings frame, Windows Update frame, ACK frame, headers frame.
+    Http2Reader.Handler handler = new BaseTestHandler() {
+      @Override public void headers(boolean inFinished, int streamId, int associatedStreamId,
+          List<Header> headerBlock) {
+      }
+
+      @Override public void settings(boolean clearPrevious, Settings settings) {
+      }
+
+      @Override public void windowUpdate(int streamId, long windowSizeIncrement) {
+      }
+
+      @Override public void ackSettings() {
+      }
+    };
+
+    Http2Reader reader = new Http2Reader(buffer, false);
+    reader.readConnectionPreface(null);
+    assertTrue(reader.nextFrame(false, handler));
+    assertTrue(reader.nextFrame(false, handler));
+    assertTrue(reader.nextFrame(false, handler));
+    assertTrue(reader.nextFrame(false, handler));
+    assertFalse(reader.nextFrame(false, handler));
   }
 
   /**
