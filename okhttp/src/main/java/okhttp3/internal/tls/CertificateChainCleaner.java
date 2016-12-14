@@ -88,8 +88,8 @@ public abstract class CertificateChainCleaner {
      */
     @Override public List<Certificate> clean(List<Certificate> chain, String hostname)
         throws SSLPeerUnverifiedException {
-      Deque<Certificate> queue = new ArrayDeque<>(chain);
-      List<Certificate> result = new ArrayList<>();
+      Deque<Certificate> queue = new ArrayDeque<Certificate>(chain);
+      List<Certificate> result = new ArrayList<Certificate>();
       result.add(queue.removeFirst());
       boolean foundTrustedCertificate = false;
 

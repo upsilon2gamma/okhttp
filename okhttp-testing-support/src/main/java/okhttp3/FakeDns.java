@@ -25,12 +25,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public final class FakeDns implements Dns {
-  private List<String> requestedHosts = new ArrayList<>();
+  private List<String> requestedHosts = new ArrayList<String>();
   private List<InetAddress> addresses = Collections.emptyList();
 
   /** Sets the addresses to be returned by this fake DNS service. */
   public FakeDns addresses(List<InetAddress> addresses) {
-    this.addresses = new ArrayList<>(addresses);
+    this.addresses = new ArrayList<InetAddress>(addresses);
     return this;
   }
 

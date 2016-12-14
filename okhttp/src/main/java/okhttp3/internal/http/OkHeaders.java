@@ -117,7 +117,7 @@ public final class OkHeaders {
 
       String value = responseHeaders.value(i);
       if (result.isEmpty()) {
-        result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
       }
       for (String varyField : value.split(",")) {
         result.add(varyField.trim());
@@ -181,7 +181,7 @@ public final class OkHeaders {
     // challenge   = auth-scheme 1*SP 1#auth-param
     // realm       = "realm" "=" realm-value
     // realm-value = quoted-string
-    List<Challenge> result = new ArrayList<>();
+    List<Challenge> result = new ArrayList<Challenge>();
     for (int i = 0, size = responseHeaders.size(); i < size; i++) {
       if (!challengeHeader.equalsIgnoreCase(responseHeaders.name(i))) {
         continue;

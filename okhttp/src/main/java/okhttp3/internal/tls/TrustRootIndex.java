@@ -86,12 +86,12 @@ public abstract class TrustRootIndex {
     private final Map<X500Principal, List<X509Certificate>> subjectToCaCerts;
 
     public BasicTrustRootIndex(X509Certificate... caCerts) {
-      subjectToCaCerts = new LinkedHashMap<>();
+      subjectToCaCerts = new LinkedHashMap<X500Principal, List<X509Certificate>>();
       for (X509Certificate caCert : caCerts) {
         X500Principal subject = caCert.getSubjectX500Principal();
         List<X509Certificate> subjectCaCerts = subjectToCaCerts.get(subject);
         if (subjectCaCerts == null) {
-          subjectCaCerts = new ArrayList<>(1);
+          subjectCaCerts = new ArrayList<X509Certificate>(1);
           subjectToCaCerts.put(subject, subjectCaCerts);
         }
         subjectCaCerts.add(caCert);

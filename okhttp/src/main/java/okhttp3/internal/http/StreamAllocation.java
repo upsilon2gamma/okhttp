@@ -311,7 +311,7 @@ public final class StreamAllocation {
    * {@link #release} on the same connection.
    */
   public void acquire(RealConnection connection) {
-    connection.allocations.add(new WeakReference<>(this));
+    connection.allocations.add(new WeakReference<StreamAllocation>(this));
   }
 
   /** Remove this allocation from the connection's list of allocations. */

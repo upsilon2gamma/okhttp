@@ -133,13 +133,19 @@ class AndroidPlatform extends Platform {
       Object networkSecurityPolicy = getInstanceMethod.invoke(null);
       Method isCleartextTrafficPermittedMethod = networkPolicyClass
           .getMethod("isCleartextTrafficPermitted");
-      boolean cleartextPermitted = (boolean) isCleartextTrafficPermittedMethod
-          .invoke(networkSecurityPolicy);
-      return cleartextPermitted;
+      //boolean cleartextPermitted = (boolean) isCleartextTrafficPermittedMethod
+          //.invoke(networkSecurityPolicy);
+      //return cleartextPermitted;
+      return true;
     } catch (ClassNotFoundException e) {
       return super.isCleartextTrafficPermitted();
-    } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException
-        | InvocationTargetException e) {
+    } catch (NoSuchMethodException e) {
+      throw new AssertionError();
+    } catch (IllegalAccessException e) {
+      throw new AssertionError();
+    } catch (IllegalArgumentException e) {
+      throw new AssertionError();
+    } catch (InvocationTargetException e) {
       throw new AssertionError();
     }
   }
@@ -156,9 +162,9 @@ class AndroidPlatform extends Platform {
             "org.apache.harmony.xnet.provider.jsse.SSLParametersImpl");
       }
 
-      OptionalMethod<Socket> setUseSessionTickets = new OptionalMethod<>(
+      OptionalMethod<Socket> setUseSessionTickets = new OptionalMethod<Socket>(
           null, "setUseSessionTickets", boolean.class);
-      OptionalMethod<Socket> setHostname = new OptionalMethod<>(
+      OptionalMethod<Socket> setHostname = new OptionalMethod<Socket>(
           null, "setHostname", String.class);
       OptionalMethod<Socket> getAlpnSelectedProtocol = null;
       OptionalMethod<Socket> setAlpnProtocols = null;
@@ -166,8 +172,8 @@ class AndroidPlatform extends Platform {
       // Attempt to find Android 5.0+ APIs.
       try {
         Class.forName("android.net.Network"); // Arbitrary class added in Android 5.0.
-        getAlpnSelectedProtocol = new OptionalMethod<>(byte[].class, "getAlpnSelectedProtocol");
-        setAlpnProtocols = new OptionalMethod<>(null, "setAlpnProtocols", byte[].class);
+        getAlpnSelectedProtocol = new OptionalMethod<Socket>(byte[].class, "getAlpnSelectedProtocol");
+        setAlpnProtocols = new OptionalMethod<Socket>(null, "setAlpnProtocols", byte[].class);
       } catch (ClassNotFoundException ignored) {
       }
 

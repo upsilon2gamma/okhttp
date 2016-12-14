@@ -158,14 +158,14 @@ public final class Http2xStream implements HttpStream {
    */
   public static List<Header> spdy3HeadersList(Request request) {
     Headers headers = request.headers();
-    List<Header> result = new ArrayList<>(headers.size() + 5);
+    List<Header> result = new ArrayList<Header>(headers.size() + 5);
     result.add(new Header(TARGET_METHOD, request.method()));
     result.add(new Header(TARGET_PATH, RequestLine.requestPath(request.url())));
     result.add(new Header(VERSION, "HTTP/1.1"));
     result.add(new Header(TARGET_HOST, Util.hostHeader(request.url(), false)));
     result.add(new Header(TARGET_SCHEME, request.url().scheme()));
 
-    Set<ByteString> names = new LinkedHashSet<>();
+    Set<ByteString> names = new LinkedHashSet<ByteString>();
     for (int i = 0, size = headers.size(); i < size; i++) {
       // header names must be lowercase.
       ByteString name = ByteString.encodeUtf8(headers.name(i).toLowerCase(Locale.US));
@@ -198,7 +198,7 @@ public final class Http2xStream implements HttpStream {
 
   public static List<Header> http2HeadersList(Request request) {
     Headers headers = request.headers();
-    List<Header> result = new ArrayList<>(headers.size() + 4);
+    List<Header> result = new ArrayList<Header>(headers.size() + 4);
     result.add(new Header(TARGET_METHOD, request.method()));
     result.add(new Header(TARGET_PATH, RequestLine.requestPath(request.url())));
     result.add(new Header(TARGET_AUTHORITY, Util.hostHeader(request.url(), false))); // Optional.

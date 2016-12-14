@@ -43,13 +43,13 @@ public final class Dispatcher {
   private ExecutorService executorService;
 
   /** Ready async calls in the order they'll be run. */
-  private final Deque<AsyncCall> readyAsyncCalls = new ArrayDeque<>();
+  private final Deque<AsyncCall> readyAsyncCalls = new ArrayDeque<AsyncCall>();
 
   /** Running asynchronous calls. Includes canceled calls that haven't finished yet. */
-  private final Deque<AsyncCall> runningAsyncCalls = new ArrayDeque<>();
+  private final Deque<AsyncCall> runningAsyncCalls = new ArrayDeque<AsyncCall>();
 
   /** Running synchronous calls. Includes canceled calls that haven't finished yet. */
-  private final Deque<RealCall> runningSyncCalls = new ArrayDeque<>();
+  private final Deque<RealCall> runningSyncCalls = new ArrayDeque<RealCall>();
 
   public Dispatcher(ExecutorService executorService) {
     this.executorService = executorService;
@@ -177,7 +177,7 @@ public final class Dispatcher {
 
   /** Returns a snapshot of the calls currently awaiting execution. */
   public synchronized List<Call> queuedCalls() {
-    List<Call> result = new ArrayList<>();
+    List<Call> result = new ArrayList<Call>();
     for (AsyncCall asyncCall : readyAsyncCalls) {
       result.add(asyncCall.get());
     }
@@ -186,7 +186,7 @@ public final class Dispatcher {
 
   /** Returns a snapshot of the calls currently being executed. */
   public synchronized List<Call> runningCalls() {
-    List<Call> result = new ArrayList<>();
+    List<Call> result = new ArrayList<Call>();
     result.addAll(runningSyncCalls);
     for (AsyncCall asyncCall : runningAsyncCalls) {
       result.add(asyncCall.get());

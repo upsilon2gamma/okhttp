@@ -50,7 +50,9 @@ class JdkWithJettyBootPlatform extends Platform {
       Object provider = Proxy.newProxyInstance(Platform.class.getClassLoader(),
           new Class[] {clientProviderClass, serverProviderClass}, new JettyNegoProvider(names));
       putMethod.invoke(null, sslSocket, provider);
-    } catch (InvocationTargetException | IllegalAccessException e) {
+    } catch (InvocationTargetException e) {
+      throw new AssertionError(e);
+    } catch (IllegalAccessException e) {
       throw new AssertionError(e);
     }
   }
@@ -58,7 +60,9 @@ class JdkWithJettyBootPlatform extends Platform {
   @Override public void afterHandshake(SSLSocket sslSocket) {
     try {
       removeMethod.invoke(null, sslSocket);
-    } catch (IllegalAccessException | InvocationTargetException ignored) {
+    } catch (IllegalAccessException e) {
+      throw new AssertionError();
+    } catch (InvocationTargetException e) {
       throw new AssertionError();
     }
   }
@@ -73,7 +77,9 @@ class JdkWithJettyBootPlatform extends Platform {
         return null;
       }
       return provider.unsupported ? null : provider.selected;
-    } catch (InvocationTargetException | IllegalAccessException e) {
+    } catch (InvocationTargetException e) {
+      throw new AssertionError();
+    } catch (IllegalAccessException e) {
       throw new AssertionError();
     }
   }
@@ -91,7 +97,8 @@ class JdkWithJettyBootPlatform extends Platform {
       Method removeMethod = negoClass.getMethod("remove", SSLSocket.class);
       return new JdkWithJettyBootPlatform(
           putMethod, getMethod, removeMethod, clientProviderClass, serverProviderClass);
-    } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+    } catch (ClassNotFoundException ignored) {
+    } catch (NoSuchMethodException ignored) {
     }
 
     return null;

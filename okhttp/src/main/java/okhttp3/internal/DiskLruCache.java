@@ -146,7 +146,7 @@ public final class DiskLruCache implements Closeable, Flushable {
   private final int valueCount;
   private long size = 0;
   private BufferedSink journalWriter;
-  private final LinkedHashMap<String, Entry> lruEntries = new LinkedHashMap<>(0, 0.75f, true);
+  private final LinkedHashMap<String, Entry> lruEntries = new LinkedHashMap<String, Entry>(0, 0.75f, true);
   private int redundantOpCount;
   private boolean hasJournalErrors;
 
@@ -729,7 +729,7 @@ public final class DiskLruCache implements Closeable, Flushable {
     initialize();
     return new Iterator<Snapshot>() {
       /** Iterate a copy of the entries to defend against concurrent modification errors. */
-      final Iterator<Entry> delegate = new ArrayList<>(lruEntries.values()).iterator();
+      final Iterator<Entry> delegate = new ArrayList<Entry>(lruEntries.values()).iterator();
 
       /** The snapshot to return from {@link #next}. Null if we haven't computed that yet. */
       Snapshot nextSnapshot;

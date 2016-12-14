@@ -72,7 +72,7 @@ public final class ConnectionPool {
     }
   };
 
-  private final Deque<RealConnection> connections = new ArrayDeque<>();
+  private final Deque<RealConnection> connections = new ArrayDeque<RealConnection>();
   final RouteDatabase routeDatabase = new RouteDatabase();
   boolean cleanupRunning;
 
@@ -154,7 +154,7 @@ public final class ConnectionPool {
 
   /** Close and remove all idle connections in the pool. */
   public void evictAll() {
-    List<RealConnection> evictedConnections = new ArrayList<>();
+    List<RealConnection> evictedConnections = new ArrayList<RealConnection>();
     synchronized (this) {
       for (Iterator<RealConnection> i = connections.iterator(); i.hasNext(); ) {
         RealConnection connection = i.next();

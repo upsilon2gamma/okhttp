@@ -81,7 +81,7 @@ public final class FramedConnection implements Closeable {
    * on {@link #executor}.
    */
   private final Listener listener;
-  private final Map<Integer, FramedStream> streams = new HashMap<>();
+  private final Map<Integer, FramedStream> streams = new HashMap<Integer, FramedStream>();
   private final String hostname;
   private int lastGoodStreamId;
   private int nextStreamId;
@@ -381,7 +381,7 @@ public final class FramedConnection implements Closeable {
       }
       pingId = nextPingId;
       nextPingId += 2;
-      if (pings == null) pings = new HashMap<>();
+      if (pings == null) pings = new HashMap<Integer, Ping>();
       pings.put(pingId, ping);
     }
     writePing(false, pingId, 0x4f4b6f6b /* ASCII "OKok" */, ping);
@@ -836,7 +836,7 @@ public final class FramedConnection implements Closeable {
   }
 
   // Guarded by this.
-  private final Set<Integer> currentPushRequests = new LinkedHashSet<>();
+  private final Set<Integer> currentPushRequests = new LinkedHashSet<Integer>();
 
   private void pushRequestLater(final int streamId, final List<Header> requestHeaders) {
     synchronized (this) {

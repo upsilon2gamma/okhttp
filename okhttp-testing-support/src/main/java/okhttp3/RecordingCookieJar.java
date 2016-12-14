@@ -25,8 +25,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public final class RecordingCookieJar implements CookieJar {
-  private final Deque<List<Cookie>> requestCookies = new ArrayDeque<>();
-  private final Deque<List<Cookie>> responseCookies = new ArrayDeque<>();
+  private final Deque<List<Cookie>> requestCookies = new ArrayDeque<List<Cookie>>();
+  private final Deque<List<Cookie>> responseCookies = new ArrayDeque<List<Cookie>>();
 
   public void enqueueRequestCookies(Cookie... cookies) {
     requestCookies.add(Arrays.asList(cookies));
@@ -38,7 +38,7 @@ public final class RecordingCookieJar implements CookieJar {
 
   public void assertResponseCookies(String... cookies) {
     List<Cookie> actualCookies = takeResponseCookies();
-    List<String> actualCookieStrings = new ArrayList<>();
+    List<String> actualCookieStrings = new ArrayList<String>();
     for (Cookie cookie : actualCookies) {
       actualCookieStrings.add(cookie.toString());
     }

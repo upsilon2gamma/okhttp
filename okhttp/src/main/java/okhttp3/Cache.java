@@ -656,7 +656,7 @@ public final class Cache implements Closeable, Flushable {
 
       try {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        List<Certificate> result = new ArrayList<>(length);
+        List<Certificate> result = new ArrayList<Certificate>(length);
         for (int i = 0; i < length; i++) {
           String line = source.readUtf8LineStrict();
           Buffer bytes = new Buffer();

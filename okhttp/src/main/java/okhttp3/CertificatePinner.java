@@ -201,7 +201,7 @@ public final class CertificatePinner {
     List<Pin> result = Collections.emptyList();
     for (Pin pin : pins) {
       if (pin.matches(hostname)) {
-        if (result.isEmpty()) result = new ArrayList<>();
+        if (result.isEmpty()) result = new ArrayList<Pin>();
         result.add(pin);
       }
     }
@@ -291,7 +291,7 @@ public final class CertificatePinner {
 
   /** Builds a configured certificate pinner. */
   public static final class Builder {
-    private final List<Pin> pins = new ArrayList<>();
+    private final List<Pin> pins = new ArrayList<Pin>();
 
     /**
      * Pins certificates for {@code pattern}.

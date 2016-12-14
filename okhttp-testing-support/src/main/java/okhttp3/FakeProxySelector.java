@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class FakeProxySelector extends ProxySelector {
-  public final List<Proxy> proxies = new ArrayList<>();
+  public final List<Proxy> proxies = new ArrayList<Proxy>();
 
   public FakeProxySelector addProxy(Proxy proxy) {
     proxies.add(proxy);

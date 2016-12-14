@@ -35,9 +35,9 @@ import org.junit.runners.model.Statement;
 
 /** A simple file system where all files are held in memory. Not safe for concurrent use. */
 public final class InMemoryFileSystem implements FileSystem, TestRule {
-  private final Map<File, Buffer> files = new LinkedHashMap<>();
-  private final Map<Source, File> openSources = new IdentityHashMap<>();
-  private final Map<Sink, File> openSinks = new IdentityHashMap<>();
+  private final Map<File, Buffer> files = new LinkedHashMap<File, Buffer>();
+  private final Map<Source, File> openSources = new IdentityHashMap<Source, File>();
+  private final Map<Sink, File> openSinks = new IdentityHashMap<Sink, File>();
 
   @Override public Statement apply(final Statement base, Description description) {
     return new Statement() {
@@ -49,7 +49,7 @@ public final class InMemoryFileSystem implements FileSystem, TestRule {
   }
 
   public void ensureResourcesClosed() {
-    List<String> openResources = new ArrayList<>();
+    List<String> openResources = new ArrayList<String>();
     for (File file : openSources.values()) {
       openResources.add("Source for " + file);
     }

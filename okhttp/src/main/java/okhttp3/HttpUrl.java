@@ -473,7 +473,7 @@ public final class HttpUrl {
   public List<String> encodedPathSegments() {
     int pathStart = url.indexOf('/', scheme.length() + 3);
     int pathEnd = delimiterOffset(url, pathStart, url.length(), "?#");
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     for (int i = pathStart; i < pathEnd; ) {
       i++; // Skip the '/'.
       int segmentEnd = delimiterOffset(url, i, pathEnd, '/');
@@ -519,7 +519,7 @@ public final class HttpUrl {
    * characters.
    */
   static List<String> queryStringToNamesAndValues(String encodedQuery) {
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     for (int pos = 0; pos <= encodedQuery.length(); ) {
       int ampersandOffset = encodedQuery.indexOf('&', pos);
       if (ampersandOffset == -1) ampersandOffset = encodedQuery.length();
@@ -564,7 +564,7 @@ public final class HttpUrl {
 
   public Set<String> queryParameterNames() {
     if (queryNamesAndValues == null) return Collections.emptySet();
-    Set<String> result = new LinkedHashSet<>();
+    Set<String> result = new LinkedHashSet<String>();
     for (int i = 0, size = queryNamesAndValues.size(); i < size; i += 2) {
       result.add(queryNamesAndValues.get(i));
     }
@@ -573,7 +573,7 @@ public final class HttpUrl {
 
   public List<String> queryParameterValues(String name) {
     if (queryNamesAndValues == null) return Collections.emptyList();
-    List<String> result = new ArrayList<>();
+    List<String> result = new ArrayList<String>();
     for (int i = 0, size = queryNamesAndValues.size(); i < size; i += 2) {
       if (name.equals(queryNamesAndValues.get(i))) {
         result.add(queryNamesAndValues.get(i + 1));
@@ -697,7 +697,7 @@ public final class HttpUrl {
     String encodedPassword = "";
     String host;
     int port = -1;
-    final List<String> encodedPathSegments = new ArrayList<>();
+    final List<String> encodedPathSegments = new ArrayList<String>();
     List<String> encodedQueryNamesAndValues;
     String encodedFragment;
 
@@ -872,7 +872,7 @@ public final class HttpUrl {
     /** Encodes the query parameter using UTF-8 and adds it to this URL's query string. */
     public Builder addQueryParameter(String name, String value) {
       if (name == null) throw new NullPointerException("name == null");
-      if (encodedQueryNamesAndValues == null) encodedQueryNamesAndValues = new ArrayList<>();
+      if (encodedQueryNamesAndValues == null) encodedQueryNamesAndValues = new ArrayList<String>();
       encodedQueryNamesAndValues.add(
           canonicalize(name, QUERY_COMPONENT_ENCODE_SET, false, false, true, true));
       encodedQueryNamesAndValues.add(value != null
@@ -884,7 +884,7 @@ public final class HttpUrl {
     /** Adds the pre-encoded query parameter to this URL's query string. */
     public Builder addEncodedQueryParameter(String encodedName, String encodedValue) {
       if (encodedName == null) throw new NullPointerException("encodedName == null");
-      if (encodedQueryNamesAndValues == null) encodedQueryNamesAndValues = new ArrayList<>();
+      if (encodedQueryNamesAndValues == null) encodedQueryNamesAndValues = new ArrayList<String>();
       encodedQueryNamesAndValues.add(
           canonicalize(encodedName, QUERY_COMPONENT_ENCODE_SET, true, false, true, true));
       encodedQueryNamesAndValues.add(encodedValue != null
@@ -1474,7 +1474,7 @@ public final class HttpUrl {
   }
 
   private List<String> percentDecode(List<String> list, boolean plusIsSpace) {
-    List<String> result = new ArrayList<>(list.size());
+    List<String> result = new ArrayList<String>(list.size());
     for (String s : list) {
       result.add(s != null ? percentDecode(s, plusIsSpace) : null);
     }

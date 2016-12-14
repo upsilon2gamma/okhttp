@@ -269,7 +269,7 @@ public final class MultipartBody extends RequestBody {
   public static final class Builder {
     private final ByteString boundary;
     private MediaType type = MIXED;
-    private final List<Part> parts = new ArrayList<>();
+    private final List<Part> parts = new ArrayList<Part>();
 
     public Builder() {
       this(UUID.randomUUID().toString());

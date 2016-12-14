@@ -102,8 +102,8 @@ public final class FormBody extends RequestBody {
   }
 
   public static final class Builder {
-    private final List<String> names = new ArrayList<>();
-    private final List<String> values = new ArrayList<>();
+    private final List<String> names = new ArrayList<String>();
+    private final List<String> values = new ArrayList<String>();
 
     public Builder add(String name, String value) {
       names.add(HttpUrl.canonicalize(name, FORM_ENCODE_SET, false, false, true, true));

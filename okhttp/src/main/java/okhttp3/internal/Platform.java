@@ -131,7 +131,7 @@ public class Platform {
   }
 
   public static List<String> alpnProtocolNames(List<Protocol> protocols) {
-    List<String> names = new ArrayList<>(protocols.size());
+    List<String> names = new ArrayList<String>(protocols.size());
     for (int i = 0, size = protocols.size(); i < size; i++) {
       Protocol protocol = protocols.get(i);
       if (protocol == Protocol.HTTP_1_0) continue; // No HTTP/1.0 for ALPN.

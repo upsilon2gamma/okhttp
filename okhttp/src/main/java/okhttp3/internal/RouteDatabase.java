@@ -26,7 +26,7 @@ import okhttp3.Route;
  * preferred.
  */
 public final class RouteDatabase {
-  private final Set<Route> failedRoutes = new LinkedHashSet<>();
+  private final Set<Route> failedRoutes = new LinkedHashSet<Route>();
 
   /** Records a failure connecting to {@code failedRoute}. */
   public synchronized void failed(Route failedRoute) {

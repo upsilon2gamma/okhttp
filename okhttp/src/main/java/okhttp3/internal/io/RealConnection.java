@@ -81,7 +81,7 @@ public final class RealConnection extends FramedConnection.Listener implements C
   public BufferedSource source;
   public BufferedSink sink;
   public int allocationLimit;
-  public final List<Reference<StreamAllocation>> allocations = new ArrayList<>();
+  public final List<Reference<StreamAllocation>> allocations = new ArrayList<Reference<StreamAllocation>>();
   public boolean noNewStreams;
   public long idleAtNanos = Long.MAX_VALUE;
 

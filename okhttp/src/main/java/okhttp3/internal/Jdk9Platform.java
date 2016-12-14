@@ -48,7 +48,9 @@ final class Jdk9Platform extends Platform {
           new Object[] {names.toArray(new String[names.size()])});
 
       sslSocket.setSSLParameters(sslParameters);
-    } catch (IllegalAccessException | InvocationTargetException e) {
+    } catch (IllegalAccessException e) {
+      throw new AssertionError();
+    } catch (InvocationTargetException e) {
       throw new AssertionError();
     }
   }
@@ -65,7 +67,9 @@ final class Jdk9Platform extends Platform {
       }
 
       return protocol;
-    } catch (IllegalAccessException | InvocationTargetException e) {
+    } catch (IllegalAccessException e) {
+      throw new AssertionError();
+    } catch (InvocationTargetException e) {
       throw new AssertionError();
     }
   }

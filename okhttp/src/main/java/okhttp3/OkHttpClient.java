@@ -68,7 +68,7 @@ public class OkHttpClient implements Cloneable, Call.Factory {
   private static final List<ConnectionSpec> DEFAULT_CONNECTION_SPECS;
 
   static {
-    List<ConnectionSpec> connSpecs = new ArrayList<>(Arrays.asList(ConnectionSpec.MODERN_TLS,
+    List<ConnectionSpec> connSpecs = new ArrayList<ConnectionSpec>(Arrays.asList(ConnectionSpec.MODERN_TLS,
         ConnectionSpec.COMPATIBLE_TLS));
     if (Platform.get().isCleartextTrafficPermitted()) {
       connSpecs.add(ConnectionSpec.CLEARTEXT);
@@ -354,8 +354,8 @@ public class OkHttpClient implements Cloneable, Call.Factory {
     Proxy proxy;
     List<Protocol> protocols;
     List<ConnectionSpec> connectionSpecs;
-    final List<Interceptor> interceptors = new ArrayList<>();
-    final List<Interceptor> networkInterceptors = new ArrayList<>();
+    final List<Interceptor> interceptors = new ArrayList<Interceptor>();
+    final List<Interceptor> networkInterceptors = new ArrayList<Interceptor>();
     ProxySelector proxySelector;
     CookieJar cookieJar;
     Cache cache;
@@ -392,9 +392,9 @@ public class OkHttpClient implements Cloneable, Call.Factory {
       followSslRedirects = true;
       followRedirects = true;
       retryOnConnectionFailure = true;
-      connectTimeout = 10_000;
-      readTimeout = 10_000;
-      writeTimeout = 10_000;
+      connectTimeout = 10000;
+      readTimeout = 10000;
+      writeTimeout = 10000;
     }
 
     Builder(OkHttpClient okHttpClient) {
